@@ -3,13 +3,14 @@ extends layouts/main
 block content
     .form-container
         form(action=routes.editProfile, method="post")
-            label(for="avatar") Avatar
-            input(type="file", id="avatar", name="avatar")
+            .fileUpload
+                label(for="avatar") Avatar
+                input(type="file", id="avatar", name="avatar")
             input(type="text", name="name", placeholder="Name")
             input(type="email", name="email", placeholder="E-mail")
             input(type="submit", value="Update Profile")
-        a.form-container__link(href=`/users${routes.changePassword}`) Change Password
-            
+        a.form-container__link(href=`/users${routes.changePassword}`)
+            button Change Password          
 
 //- <label> 요소는 for 속성을 사용하여 다른 요소와 결합할 수 있으며, 
 //- 이때 <label> 요소의 for 속성값은 결합하고자 하는 요소의 id 속성값과 같아야 합니다. 
