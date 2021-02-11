@@ -3,7 +3,9 @@ import morgan from "morgan";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import passport from "passport";
+import mongoose from "mongoose";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 import { localsMiddleware } from "./middlewares";
 import userRouter from "./routers/userRouter";
@@ -14,6 +16,8 @@ import routes from "./routes";
 import "./passport";
 
 const app = express();
+// session obj를 필요로 하므로 mongoStore에 session 추가
+const CookieStore = MongoStore(session);
 
 app.use(helmet({ referrerPolicy: { policy: "no-referrer" } }));
 app.set("view engine", "pug");
@@ -29,6 +33,7 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     resave: true,
     saveUninitialized: false,
+    store: new CookieStore({ mongooseConnection: mongoose.connection }),
   })
 );
 app.use(passport.initialize());
