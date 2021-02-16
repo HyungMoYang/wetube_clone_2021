@@ -42,7 +42,7 @@ export const postLogin = passport.authenticate("local", {
 // LOGIN & LOGOUT - GITHUB (안쓰는 parameter 처리법 )
 export const githubLoginCallback = async (_, __, profile, cb) => {
   const {
-    _json: { id, avatar_url, name, email },
+    _json: { id, avatarUrl, name, email },
   } = profile;
 
   try {
@@ -56,7 +56,7 @@ export const githubLoginCallback = async (_, __, profile, cb) => {
       email,
       name,
       githubId: id,
-      avatarUrl: avatar_url,
+      avatarUrl,
     });
     return cb(null, newUser);
   } catch (error) {
@@ -75,7 +75,9 @@ export const logout = (req, res) => {
   res.redirect(routes.home);
 };
 
-export const users = (req, res) => res.render("users");
+export const getMe = (req, res) => {
+  res.render("userDetail", { pageTitle: "userDetail", user: req.user });
+};
 export const userDetail = (req, res) => res.render("userDetail");
 export const editProfile = (req, res) => res.render("editProfile");
 export const changePassword = (req, res) => res.render("changePassword");

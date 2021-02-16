@@ -3,6 +3,7 @@ import passport from "passport";
 import {
   getJoin,
   getLogin,
+  getMe,
   githubLogin,
   logout,
   postGithubLogin,
@@ -33,5 +34,8 @@ globalRouter.get(
   passport.authenticate("github", { failureRedirect: "/login" }),
   postGithubLogin
 );
+
+// logged user profile
+globalRouter.get(routes.me, getMe);
 
 export default globalRouter;
