@@ -39,10 +39,13 @@ export const postLogin = passport.authenticate("local", {
   successRedirect: routes.home,
 });
 
-// LOGIN & LOGOUT - GITHUB (안쓰는 parameter 처리법 )
+// LOGIN & LOGOUT - GITHUB
+export const githubLogin = passport.authenticate("github");
+
+//(안쓰는 parameter 처리법 )
 export const githubLoginCallback = async (_, __, profile, cb) => {
   const {
-    _json: { id, avatarUrl, name, email },
+    _json: { id, avatar_url, name, email },
   } = profile;
 
   try {
@@ -56,15 +59,13 @@ export const githubLoginCallback = async (_, __, profile, cb) => {
       email,
       name,
       githubId: id,
-      avatarUrl,
+      avatarUrl: avatar_url,
     });
     return cb(null, newUser);
   } catch (error) {
     return cb(error);
   }
 };
-
-export const githubLogin = passport.authenticate("github");
 
 export const postGithubLogin = (req, res) => {
   res.redirect(routes.home);
@@ -92,5 +93,28 @@ export const userDetail = async (req, res) => {
     res.redirect(routes.home);
   }
 };
-export const editProfile = (req, res) => res.render("editProfile");
-export const changePassword = (req, res) => res.render("changePassword");
+
+// EDIT PROFILE
+export const getEditProfile = (req, res) =>
+  res.render("editProfile", { pageTitle: "Edit Profile" });
+
+export const postEditProfile = async (req, res) => {
+  const {
+    user: { _id },
+    body: { name, email },
+    file,
+  } = req;
+  try {
+    await User.findByIdAndUpdate(_id, {
+      name,
+      email,
+      avatarUrl: file ? file.path : req.user.avatarUrl,
+    });
+    res.redirect(routes.me);
+  } catch (error) {
+    res.render("editProfile", { pageTitle: "Edit Profile" });
+  }
+};
+
+export const changePassword = (req, res) =>
+  res.render("changePassword", { pageTitle: "Change Password" });
