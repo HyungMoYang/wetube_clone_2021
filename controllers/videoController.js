@@ -44,7 +44,11 @@ export const postUpload = async (req, res) => {
     fileUrl: path,
     title,
     description,
+    creator: req.user.id,
   });
+  // user가 video id를 갖게 함.
+  req.user.videos.push(newVideo.id);
+  req.user.save(); // 저장
   // console.log(newVideo);
   res.redirect(routes.videoDetail(newVideo.id));
 };
@@ -56,7 +60,8 @@ export const videoDetail = async (req, res) => {
   } = req;
 
   try {
-    const video = await Video.findById(id);
+    const video = await Video.findById(id).populate("creator");
+    console.log(video);
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     res.redirect(routes.home);
