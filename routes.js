@@ -1,3 +1,6 @@
+// BASE
+const BASE = "http://localhost:4000/";
+
 // Global
 const HOME = "/";
 const JOIN = "/join";
@@ -65,6 +68,7 @@ const routes = {
   github: GITHUB,
   githubCallback: GITHUB_CALLBACK,
   me: ME,
+  base: BASE,
 };
 
 export default routes;
