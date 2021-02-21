@@ -10,7 +10,7 @@ block content
                 else
                     img.u-avatar(src=`${routes.base}${user.avatarUrl}`)
             h4.profile__username=user.name
-        if user.id === loggedUser.id
+        if loggedUser && user.id === loggedUser.id
             .user-profile__btns
                 a(href=`/users${routes.editProfile}`)
                     button ✏️ Edit Profile
